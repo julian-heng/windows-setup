@@ -35,9 +35,6 @@ if %ERRORLEVEL% geq 1 (
     goto Cleanup
 )
 
-:: Modify registry
-call :ModifyRegistry
-
 :: Modify registry (Windows 10 only)
 if %version% == 10.0 (
     call :ModifyRegistryWin10
