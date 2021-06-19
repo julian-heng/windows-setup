@@ -88,8 +88,6 @@ choco install -y %programs%
 :: Git requires specific parameters
 set params=/GitOnlyOnPath
 set params=%params% /NoShellIntegration
-set params=%params% /NoGuiHereIntegration
-set params=%params% /NoShellHereIntegration
 
 @echo on
 choco install -y git --params "%params%"
