@@ -5,6 +5,12 @@
 :: ==========================
 :Main
 
+:: Parse arguments
+call :ParseArgs %*
+if %ERRORLEVEL% geq 1 (
+    goto Cleanup
+)
+
 :: Check if running as admin
 net session 1>NUL 2>NUL
 if %ERRORLEVEL% geq 1 (
@@ -43,6 +49,44 @@ if %version% == 10.0 (
 :Cleanup
 set PROMPT=%old_prompt%
 exit /B %ERRORLEVEL%
+
+
+:: FUNCTION: Print help message
+:: ============================
+:PrintHelp
+
+echo Usage: %PROGRAM% [options]
+echo     /D    Don't execute any commands
+echo     /H    Prints this message
+exit /B
+
+
+:: FUNCTION: Parse Arguments
+:: =========================
+:ParseArgs
+
+:: Set arguments to undefined
+set ARG_DRY=undefined
+
+:ParseArgsLoop
+    if "%~1" == "" (
+        goto ParseArgsEnd
+    )
+
+    if "%~1" == "/D" (
+        set ARG_DRY=1
+    )
+
+    if "%~1" == "/H" (
+        call :PrintHelp
+        exit /B 1
+    )
+
+    shift
+    goto ParseArgsLoop
+
+:ParseArgsEnd
+exit /B 0
 
 
 :: FUNCTION: Installs Chocolatey
