@@ -18,10 +18,6 @@ if %ERRORLEVEL% geq 1 (
     exit /B %ERRORLEVEL%
 )
 
-:: Change the prompt
-set old_prompt=%PROMPT%
-set PROMPT=^>^>^>^ 
-
 :: Get Windows version
 :: From Tronscript
 for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| find "CurrentVersion"') do set version=%%i
@@ -46,7 +42,6 @@ if %version% == 6.3 (
 )
 
 :Cleanup
-set PROMPT=%old_prompt%
 exit /B %ERRORLEVEL%
 
 
@@ -88,14 +83,26 @@ set ARG_DRY=undefined
 exit /B 0
 
 
+:: FUNCTION: Execute command
+:: ===========================
+:RunCmd
+
+echo ^>^>^> %*
+if %ARG_DRY% == 1 (
+    exit /B
+)
+
+%*
+exit /B %ERRORLEVEL%
+
+
 :: FUNCTION: Installs Chocolatey
 :: =============================
 :InstallChocolatey
 
 echo ::: Installing Chocolatey...
-@echo on
-@powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
-@echo off
+call :RunCmd powershell -NoProfile -ExecutionPolicy Bypass -Command ^"iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))^"
+call :RunCmd SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 echo ::: Finished installing Chocolatey.
 
 exit /B %ERRORLEVEL%
@@ -127,17 +134,13 @@ set programs=%programs% winrar
 set programs=%programs% youtube-dl
 
 :: Install the program
-@echo on
-choco install -y %programs%
-@echo off
+call :RunCmd choco install -y %programs%
 
 :: Git requires specific parameters
 set params=/GitOnlyOnPath
 set params=%params% /NoShellIntegration
 
-@echo on
-choco install -y git --params "%params%"
-@echo off
+call :RunCmd choco install -y git --params ^"%params%^"
 echo ::: Finished installing programs.
 
 exit /B %ERRORLEVEL%
@@ -150,9 +153,7 @@ exit /B %ERRORLEVEL%
 echo ::: Modifying Registry (Windows 10)...
 
 :: Change inactive title bar color
-@echo on
-reg add HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\DWM /f /v AccentColorInactive /t REG_DWORD /d 0x00c9c9c9
-@echo off
+call :RunCmd reg add HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\DWM /f /v AccentColorInactive /t REG_DWORD /d 0x00c9c9c9
 
 :: Remove folders from My Computer
 
@@ -176,12 +177,10 @@ set folders_guid=%folders_guid% {f86fa3ab-70d2-4fc7-9c99-fcbf05467f3a}
 :: 3D Objects
 set folders_guid=%folders_guid% {0DB7E03F-FC29-4DC6-9020-FF41B59E513A}
 
-@echo on
 for %%i in (%folders_guid%) do (
-    reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\%%i /f
-    reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\%%i /f
+    call :RunCmd reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\%%i /f
+    call :RunCmd reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\%%i /f
 )
-@echo off
 
 echo ::: Finished Modifying Registry (Windows 10)...
 exit /B %ERRORLEVEL%
