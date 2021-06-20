@@ -23,9 +23,8 @@ set old_prompt=%PROMPT%
 set PROMPT=^>^>^>^ 
 
 :: Get Windows version
-for /f "tokens=4-5 delims=. " %%i in ('ver') do (
-    set version=%%i.%%j
-)
+:: From Tronscript
+for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| find "CurrentVersion"') do set version=%%i
 
 :: Install chocolatey
 call :InstallChocolatey
@@ -42,7 +41,7 @@ if %ERRORLEVEL% geq 1 (
 )
 
 :: Modify registry (Windows 10 only)
-if %version% == 10.0 (
+if %version% == 6.3 (
     call :ModifyRegistryWin10
 )
 
