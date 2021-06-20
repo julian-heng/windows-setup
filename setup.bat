@@ -66,6 +66,7 @@ echo Installing Programs...
 
 :: Setting up the list of programs
 set programs=7zip
+set programs=%programs% altdrag
 set programs=%programs% cmake
 set programs=%programs% firefox
 set programs=%programs% foobar2000
@@ -78,7 +79,9 @@ set programs=%programs% obs-studio
 set programs=%programs% speccy
 set programs=%programs% sublimemerge
 set programs=%programs% sublimetext3
+set programs=%programs% windirstat
 set programs=%programs% winrar
+set programs=%programs% youtube-dl
 
 :: Install the program
 @echo on
