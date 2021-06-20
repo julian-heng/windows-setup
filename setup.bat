@@ -14,7 +14,7 @@ if %ERRORLEVEL% geq 1 (
 :: Check if running as admin
 net session 1>NUL 2>NUL
 if %ERRORLEVEL% geq 1 (
-    echo Not running as administrator. Exiting...
+    echo ::: Not running as administrator. Exiting...
     exit /B %ERRORLEVEL%
 )
 
@@ -29,14 +29,14 @@ for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Curren
 :: Install chocolatey
 call :InstallChocolatey
 if %ERRORLEVEL% geq 1 (
-    echo Error installing chocolatey
+    echo ::: Error installing chocolatey
     goto Cleanup
 )
 
 :: Install programs
 call :InstallPrograms
 if %ERRORLEVEL% geq 1 (
-    echo Error installing programs
+    echo ::: Error installing programs
     goto Cleanup
 )
 
@@ -92,11 +92,11 @@ exit /B 0
 :: =============================
 :InstallChocolatey
 
-echo Installing Chocolatey...
+echo ::: Installing Chocolatey...
 @echo on
 @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
 @echo off
-echo Finished installing Chocolatey.
+echo ::: Finished installing Chocolatey.
 
 exit /B %ERRORLEVEL%
 
@@ -105,7 +105,7 @@ exit /B %ERRORLEVEL%
 :: ============================================
 :InstallPrograms
 
-echo Installing Programs...
+echo ::: Installing Programs...
 
 :: Setting up the list of programs
 set programs=7zip
@@ -138,7 +138,8 @@ set params=%params% /NoShellIntegration
 @echo on
 choco install -y git --params "%params%"
 @echo off
-echo Finished installing programs.
+echo ::: Finished installing programs.
+
 exit /B %ERRORLEVEL%
 
 
@@ -146,7 +147,7 @@ exit /B %ERRORLEVEL%
 :: ==========================================
 :ModifyRegistryWin10
 
-echo Modifying Registry (Windows 10)...
+echo ::: Modifying Registry (Windows 10)...
 
 :: Change inactive title bar color
 @echo on
@@ -182,7 +183,7 @@ for %%i in (%folders_guid%) do (
 )
 @echo off
 
-echo Finished Modifying Registry (Windows 10)...
+echo ::: Finished Modifying Registry (Windows 10)...
 exit /B %ERRORLEVEL%
 
 
