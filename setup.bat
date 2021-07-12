@@ -20,7 +20,7 @@ if %ERRORLEVEL% geq 1 (
 
 :: Get Windows version
 :: From Tronscript
-for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| find "CurrentVersion"') do set version=%%i
+for /f "tokens=3*" %%i IN ('reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v CurrentVersion ^| findstr "CurrentVersion"') do set version=%%i
 
 :: Install chocolatey
 call :InstallChocolatey
