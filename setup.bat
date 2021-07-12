@@ -103,6 +103,7 @@ exit /B %ERRORLEVEL%
 echo ::: Installing Chocolatey...
 call :RunCmd powershell -NoProfile -ExecutionPolicy Bypass -Command ^"Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
 call :RunCmd SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+call :RunCmd choco feature enable -n useRememberedArgumentsForUpgrades
 echo ::: Finished installing Chocolatey.
 
 exit /B %ERRORLEVEL%
