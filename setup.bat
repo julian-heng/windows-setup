@@ -124,7 +124,6 @@ set programs=%programs% foobar2000
 set programs=%programs% gnupg
 set programs=%programs% keepass
 set programs=%programs% krita
-set programs=%programs% malwarebytes
 set programs=%programs% mpv
 set programs=%programs% obs-studio
 set programs=%programs% procexp
