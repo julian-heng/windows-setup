@@ -49,7 +49,7 @@ exit /B %ERRORLEVEL%
 :: ============================
 :PrintHelp
 
-echo Usage: %PROGRAM% [options]
+echo Usage: setup.bat [options]
 echo     /D    Don't execute any commands
 echo     /H    Prints this message
 exit /B
