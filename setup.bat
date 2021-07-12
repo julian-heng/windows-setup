@@ -125,7 +125,6 @@ set programs=%programs% keepass
 set programs=%programs% krita
 set programs=%programs% malwarebytes
 set programs=%programs% mpv
-set programs=%programs% nextcloud-client
 set programs=%programs% obs-studio
 set programs=%programs% procexp
 set programs=%programs% speccy
@@ -136,8 +135,25 @@ set programs=%programs% windirstat
 set programs=%programs% winrar
 set programs=%programs% youtube-dl
 
+:: Setting up the list of programs for Windows 10
+if %version% == 6.3 (
+    set programs=%programs% nextcloud-client
+    set programs=%programs% python
+)
+
 :: Install the program
 call :RunCmd choco install -y %programs%
+
+:: Windows 7 specific programs
+if %version% == 6.1 (
+    call :RunCmd choco install -y nextcloud-client --version 3.1.3
+    call :RunCmd choco install -y python --version 3.8.10
+
+    :: Pin packages to prevent upgrades
+    call :RunCmd choco pin add -y --name nextcloud-client --version 3.1.3
+    call :RunCmd choco pin add -y --name python --version 3.8.10
+    call :RunCmd choco pin add -y --name python3 --version 3.8.10
+)
 
 :: Git requires specific parameters
 set params=/GitOnlyOnPath
