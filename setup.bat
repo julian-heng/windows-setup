@@ -121,6 +121,7 @@ set programs=%programs% altdrag
 set programs=%programs% cmake
 set programs=%programs% firefox
 set programs=%programs% foobar2000
+set programs=%programs% gnupg
 set programs=%programs% keepass
 set programs=%programs% krita
 set programs=%programs% malwarebytes
