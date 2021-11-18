@@ -117,7 +117,7 @@ echo ::: Installing Programs...
 
 :: Setting up the list of programs
 set programs=7zip
-set programs=%programs% altdrag
+set programs=%programs% altsnap
 set programs=%programs% cmake
 set programs=%programs% firefox
 set programs=%programs% foobar2000
